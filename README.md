@@ -1,6 +1,12 @@
-# <img src="assets/mascot.svg" width="40" height="40" alt="Clawd wearing a hard hat" /> Practical Claude
+<p align="center">
+  <img src="assets/mascot.svg" alt="Clawd wearing a hard hat" width="150" height="150">
+</p>
 
-A hands-on presentation covering demos, patterns, and pro tips for getting the most out of [Claude Code](https://claude.ai/code).
+<h1 align="center">Practical Claude</h1>
+
+<p align="center">
+  A hands-on presentation covering demos, patterns, and pro tips for getting the most out of <a href="https://claude.ai/code">Claude Code</a>.
+</p>
 
 ## What's Inside
 
