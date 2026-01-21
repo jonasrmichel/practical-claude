@@ -455,23 +455,29 @@ Context travels with you.
 
 # MCP: Model Context Protocol
 
-Connect Claude to external tools:
+Connect Claude to external tools. Example: fetch trending topics from r/explainlikeimfive:
 
 ```json
 {
   "mcpServers": {
-    "postgres": {
-      "command": "mcp-postgres",
-      "args": ["postgresql://..."]
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
     }
   }
 }
 ```
 
-Now Claude can:
-- Query your database
-- Read from APIs
-- Access internal tools
+Now Claude can fetch from the Reddit API:
+```
+"Get the top 5 posts from r/explainlikeimfive"
+```
+```
+→ Fetching https://www.reddit.com/r/explainlikeimfive/top.json
+→ 1. ELI5: Why do we dream?
+→ 2. ELI5: How does WiFi actually work?
+→ 3. ELI5: What causes déjà vu?
+```
 
 MCP = Claude's plugin system.
 
