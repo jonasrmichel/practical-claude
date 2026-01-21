@@ -1,4 +1,4 @@
-# <img src="assets/mascot.png" width="40" height="40" alt="Clawd wearing a hard hat" /> Practical Claude
+# <img src="assets/mascot.svg" width="40" height="40" alt="Clawd wearing a hard hat" /> Practical Claude
 
 A hands-on presentation covering demos, patterns, and pro tips for getting the most out of [Claude Code](https://claude.ai/code).
 
