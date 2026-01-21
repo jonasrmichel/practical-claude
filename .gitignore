@@ -1,0 +1,10 @@
+# Swap files
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+
+# Build artifacts
+eli5/eli5
