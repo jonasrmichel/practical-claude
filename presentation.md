@@ -3,14 +3,17 @@
 
 **@jonasrmichel**
 
-**Topics**
+### Overview
 - Setup & CLAUDE.md
 - Plan Mode & Subagents
 - Hooks & Permissions
 - Parallel Claudes & Remote Sessions
 - MCP & Verification
 
-**Demo**: `eli5` - a Go CLI that explains any topic using the Claude API
+### Demo
+
+`eli5` - a Go CLI that explains any topic in simple terms
+
 ```
 $ eli5 "black holes"
 → A black hole is like a cosmic vacuum cleaner that's SO strong, not even light can escape!
@@ -20,9 +23,9 @@ Press `space` to continue, `q` to quit
 
 ---
 
-# What We're Building
+# Running Example
 
-A Go CLI tool that explains topics simply:
+Let's build a CLI tool called `eli5` that explains topics simply:
 
 ```bash
 eli5 "quantum computing"
@@ -120,6 +123,8 @@ Claude API for explanations
 
 Claude reads this on every session start.
 
+**Tip:** Tag @.claude in code reviews to add items to CLAUDE.md.
+
 ---
 
 # Models: Opus vs Sonnet
@@ -139,7 +144,7 @@ claude --model opus
 claude
 ```
 
-**Rule of thumb**: Start with Sonnet, escalate to Opus for architecture.
+**Tip**: Start with Sonnet, escalate to Opus for architecture.
 
 ---
 
@@ -199,6 +204,31 @@ Claude uses Explore agent → searches → returns findings.
 
 ---
 
+# Custom Subagents
+
+Define specialized agents in `.claude/agents/`:
+
+```yaml
+# .claude/agents/go-expert.yaml
+name: go-expert
+description: Go specialist with advanced techniques
+prompt: |
+  You are a Go expert. Follow these principles:
+  - Idiomatic Go (effective Go, Go proverbs)
+  - Table-driven tests
+  - Error wrapping with %w
+  - Context propagation
+  - Graceful shutdown patterns
+  - Channel/goroutine best practices
+```
+
+Use it:
+```
+"Ask @go-expert to review main.go for concurrency issues"
+```
+
+---
+
 # Live Build: eli5 CLI
 
 Let's build our CLI! The prompt:
@@ -217,36 +247,7 @@ Use the anthropic-sdk-go package.
 
 ---
 
-# Live Build: Result
-
-```go
-///package main
-///
-///import (
-///    "context"
-///    "fmt"
-///    "os"
-///    "github.com/anthropics/anthropic-sdk-go"
-///)
-///
-///func main() {
-client := anthropic.NewClient()
-message, _ := client.Messages.New(context.TODO(),
-    anthropic.MessageNewParams{
-        Model:     anthropic.ModelClaude3_5SonnetLatest,
-        MaxTokens: 1024,
-        Messages: []anthropic.MessageParam{{
-            Role:    anthropic.MessageParamRoleUser,
-            Content: "Explain " + os.Args[1] + " like I'm 5",
-        }},
-    })
-fmt.Println(message.Content[0].Text)
-///}
-```
-
----
-
-# Hooks: Auto-Format Code
+# Hooks
 
 Hooks run commands on Claude events:
 
@@ -292,7 +293,7 @@ Built-in productivity boosters:
 
 # Skills
 
-Custom reusable commands (coming soon to all users):
+Custom reusable commands:
 
 ```yaml
 # .claude/skills/eli5-test.yaml
@@ -310,6 +311,31 @@ Then:
 ```
 
 Skills = your workflow, automated.
+
+---
+
+# Skills: Invocation Control
+
+Skills can be invoked **manually** (by you) or **automatically** (by Claude):
+
+```yaml
+# .claude/skills/eli5-test/SKILL.md
+---
+name: eli5-test
+description: Run eli5 with test topics
+# Control who can invoke:
+disable-model-invocation: false  # Claude can use (default)
+user-invocable: true             # You can use (default)
+---
+```
+
+| Setting | Effect |
+|---------|--------|
+| Both defaults | Claude uses when relevant, you can invoke manually |
+| `disable-model-invocation: true` | Manual only (e.g., deploy scripts) |
+| `user-invocable: false` | Claude only (e.g., background knowledge) |
+
+**Tip**: Write good `description` fields - Claude uses them to decide when to invoke.
 
 ---
 
@@ -352,7 +378,7 @@ Control what Claude can do:
 
 Save to `.claude/settings.json`
 
-**Pro tip**: Start restrictive, allow as needed.
+**Tip**: Start restrictive, allow as needed.
 
 ---
 
@@ -375,6 +401,8 @@ Claude integrates with your GitHub workflow:
 ```
 /review-pr 123
 ```
+
+**Tip:** Install the Claude Code GitHub action using `/install-github-action`.
 
 ---
 
@@ -438,6 +466,33 @@ Context travels with you.
 
 ---
 
+# Teleporting: Remote → Local
+
+Pull a remote session back to your terminal:
+
+```bash
+# List your remote sessions
+claude sessions list
+
+# Resume a remote session locally
+claude sessions resume <session-id>
+```
+
+```
+Remote (claude.ai/code)          Local
+┌────────────────────────┐      ┌────────────────────────┐
+│ Long refactor running  │      │ $ claude sessions      │
+│ ...                    │  ──▶ │   resume abc123        │
+│ Ready for review       │      │                        │
+└────────────────────────┘      │ Resuming session...    │
+                                │ Context restored ✓     │
+                                └────────────────────────┘
+```
+
+Continue where Claude left off, now with full local tooling.
+
+---
+
 # Part 4: Power User
 
 ```
@@ -455,7 +510,9 @@ Context travels with you.
 
 # MCP: Model Context Protocol
 
-Connect Claude to external tools. Example: fetch trending topics from r/explainlikeimfive:
+Connect Claude to external tools.
+
+Example: fetch trending topics from r/explainlikeimfive:
 
 ```json
 {
@@ -480,6 +537,34 @@ Now Claude can fetch from the Reddit API:
 ```
 
 MCP = Claude's plugin system.
+
+---
+
+# MCP in Action: eli5 --top
+
+Let's add a feature to browse r/explainlikeimfive:
+
+```bash
+eli5 --top       # List top 3 ELI5 topics (default)
+eli5 --top 5     # List top 5 ELI5 topics
+eli5 --top 10    # List top 10 ELI5 topics
+```
+
+```
+$ eli5 --top
+Top posts from r/explainlikeimfive:
+  1. Why do we dream?
+  2. How does WiFi actually work?
+  3. What causes déjà vu?
+
+Select a topic (1-3): 2
+
+Top answer:
+→ Imagine you're in a room yelling to your friend...
+  WiFi is like that, but with invisible radio waves!
+```
+
+Claude + MCP fetches Reddit → user selects → shows top response.
 
 ---
 
