@@ -18,7 +18,7 @@ paging: Slide %d / %d
 - Parallel Claudes & Remote Sessions
 - MCP & Verification
 
-Press `→` for next slide, `←` for previous slide, `Ctrl+E` to execute a slide's code block, `q` to quit
+Press `→` for next slide, `←` for previous slide, `Ctrl+E` to execute a slide's code block, `q` to quit.
 
 ---
 
@@ -159,9 +159,9 @@ Start with Sonnet, escalate to Opus for architecture.
 ┌────────────────────────────────────────────────────┐
 │                                                    │
 │   5. Subagents                                     │
-│   6. Plan Mode                                     │
-│   7-8. Live Build                                  │
-│   9. Hooks                                         │
+│   6. Hooks                                         │
+│   7. Plan Mode                                     │
+│   8-9. Live Build                                  │
 │   10. Slash Commands                               │
 │   11. Skills                                       │
 │                                                    │
@@ -249,6 +249,29 @@ If delegation isn't reliable, make the description more specific.
 
 ---
 
+# Hooks
+
+Hooks run commands on Claude events:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write|Edit",
+      "command": ["gofmt", "-w", "$FILE_PATH"]
+    }]
+  }
+}
+```
+
+Save to `.claude/hooks.json`
+
+Every file write → auto-formatted with `gofmt`
+
+<!-- DEMO: Show hook in action -->
+
+---
+
 # Plan Mode
 
 For non-trivial changes, plan first:
@@ -288,29 +311,6 @@ claude -c -p "
 ```
 
 <!-- DEMO: Build the CLI live -->
-
----
-
-# Hooks
-
-Hooks run commands on Claude events:
-
-```json
-{
-  "hooks": {
-    "PostToolUse": [{
-      "matcher": "Write|Edit",
-      "command": ["gofmt", "-w", "$FILE_PATH"]
-    }]
-  }
-}
-```
-
-Save to `.claude/hooks.json`
-
-Every file write → auto-formatted with `gofmt`
-
-<!-- DEMO: Show hook in action -->
 
 ---
 
