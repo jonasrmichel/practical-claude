@@ -10,7 +10,7 @@
 - Parallel Claudes & Remote Sessions
 - MCP & Verification
 
-### Demo
+### Working Example
 
 `eli5` - a Go CLI that explains any topic in simple terms
 
@@ -123,9 +123,16 @@ Claude API for explanations
 
 Claude reads this on every session start.
 
-### Tip
+## Tip
 
-Tag @.claude in code reviews to add items to CLAUDE.md.
+Tag `@.claude` in PR comments to automatically update CLAUDE.md:
+
+```
+@.claude remember: always use context.Background()
+for top-level calls in this repo
+```
+
+Claude will add this to CLAUDE.md and apply it in future sessions.
 
 ---
 
@@ -146,7 +153,7 @@ claude --model opus
 claude
 ```
 
-### Tip
+## Tip
 
 Start with Sonnet, escalate to Opus for architecture.
 
@@ -257,7 +264,7 @@ Claude: [Automatically delegates to @go-expert]
 
 Other trigger phrases: `"Use immediately after"`, `"MUST BE USED for"`
 
-### Tip
+## Tip
 
 If delegation isn't reliable, make the description more specific.
 
@@ -369,7 +376,7 @@ user-invocable: true             # You can use (default)
 | `disable-model-invocation: true` | Manual only (e.g., deploy scripts) |
 | `user-invocable: false` | Claude only (e.g., background knowledge) |
 
-### Tip
+## Tip
 
 Write good `description` fields - Claude uses them to decide when to invoke.
 
@@ -414,7 +421,7 @@ Control what Claude can do:
 
 Save to `.claude/settings.json`
 
-### Tip
+## Tip
 
 Start restrictive, allow as needed.
 
@@ -440,7 +447,7 @@ Claude integrates with your GitHub workflow:
 /review-pr 123
 ```
 
-### Tip
+## Tip
 
 Install the Claude Code GitHub action using `/install-github-action`.
 
@@ -622,7 +629,7 @@ After changes, always run:
 
 Claude will run these to verify its own work.
 
-### Tip
+## Tip
 
 Add to hooks for automatic verification.
 
