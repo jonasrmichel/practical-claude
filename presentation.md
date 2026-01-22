@@ -162,8 +162,7 @@ Start with Sonnet, escalate to Opus for architecture.
 │   6. Plan Mode                                     │
 │   7-8. Live Build                                  │
 │   9. Hooks                                         │
-│   10. Slash Commands                               │
-│   11. Skills                                       │
+│   10. Skills                                       │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
@@ -314,51 +313,6 @@ Every file write → auto-formatted with `gofmt`
 
 ---
 
-# Slash Commands
-
-Built-in productivity boosters:
-
-| Command | Action |
-|---------|--------|
-| `/commit` | Smart commit with good message |
-| `/review-pr` | Review a pull request |
-| `/init` | Initialize CLAUDE.md |
-| `/plan` | Enter plan mode |
-| `/help` | Show all commands |
-
-```bash
-# After making changes, continue session with /commit
-claude -c -p "/commit"
-```
-
-<!-- DEMO: /commit our eli5 changes -->
-
----
-
-# Custom Commands
-
-Create project-specific commands in `.claude/commands/`:
-
-```markdown
-# .claude/commands/test.md
-
-Run all tests and show coverage report.
-
-## Steps
-1. Run `go test -cover ./...`
-2. If tests fail, analyze the errors
-3. Suggest fixes for any failures
-```
-
-Then invoke it:
-```bash
-claude -c -p "/test"
-```
-
-Commands are markdown files - Claude follows the instructions inside.
-
----
-
 # Skills
 
 Custom reusable commands in `.claude/skills/<name>/SKILL.md`:
@@ -366,13 +320,17 @@ Custom reusable commands in `.claude/skills/<name>/SKILL.md`:
 ```markdown
 –––
 description: Build and test eli5 with sample topics
+disable-model-invocation: false
+user-invocable: true
 –––
 ## Steps
 1. Run `go build -o eli5 .`
 2. Test with `./eli5 "gravity"`
 ```
 
-Invoke with `/eli5-test`. Frontmatter controls invocation:
+Invoke manually with `/eli5-test`.
+
+Frontmatter controls automatic invocation:
 
 | Setting | Effect |
 |---------|--------|
@@ -382,27 +340,6 @@ Invoke with `/eli5-test`. Frontmatter controls invocation:
 ## Tip
 
 Write good `description` fields - Claude uses them to decide when to invoke.
-
----
-
-# Skills vs Slash Commands
-
-Slash commands (`.claude/commands/`) are **legacy** - skills are recommended:
-
-| Aspect | Skills | Slash Commands |
-|--------|--------|----------------|
-| Location | `.claude/skills/<name>/SKILL.md` | `.claude/commands/<name>.md` |
-| Structure | Directory + supporting files | Single file |
-| Invocation control | ✅ Frontmatter options | ❌ None |
-| Subagent execution | ✅ `context: fork` | ❌ No |
-| Tool restrictions | ✅ `allowed-tools` | ❌ No |
-
-Both are invoked with `/name` and both can be triggered by you or Claude.
-
-## When to Use Each
-
-- **Skills**: Need supporting files, invocation control, or subagent execution
-- **Slash Commands**: Simple single-file commands (still works, but consider migrating)
 
 ---
 
