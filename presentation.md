@@ -363,14 +363,14 @@ Commands are markdown files - Claude follows the instructions inside.
 
 Custom reusable commands:
 
-```yaml
-# .claude/skills/eli5-test.yaml
-name: eli5-test
-description: Run eli5 with test topics
-command: |
-  go build -o eli5 . && \
-  ./eli5 "gravity" && \
-  ./eli5 "the internet"
+```markdown
+<!-- .claude/skills/eli5-test/SKILL.md -->
+Build and run eli5 with sample topics to verify it works.
+
+## Steps
+1. Run `go build -o eli5 .`
+2. Test with `./eli5 "gravity"`
+3. Test with `./eli5 "the internet"`
 ```
 
 Then:
