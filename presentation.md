@@ -409,6 +409,27 @@ Write good `description` fields - Claude uses them to decide when to invoke.
 
 ---
 
+# Skills vs Slash Commands
+
+Slash commands (`.claude/commands/`) are **legacy** - skills are recommended:
+
+| Aspect | Skills | Slash Commands |
+|--------|--------|----------------|
+| Location | `.claude/skills/<name>/SKILL.md` | `.claude/commands/<name>.md` |
+| Structure | Directory + supporting files | Single file |
+| Invocation control | ✅ Frontmatter options | ❌ None |
+| Subagent execution | ✅ `context: fork` | ❌ No |
+| Tool restrictions | ✅ `allowed-tools` | ❌ No |
+
+Both are invoked with `/name` and both can be triggered by you or Claude.
+
+## When to Use Each
+
+- **Skills**: Need supporting files, invocation control, or subagent execution
+- **Slash Commands**: Simple single-file commands (still works, but consider migrating)
+
+---
+
 # Part 3: Ship & Scale
 
 ```
