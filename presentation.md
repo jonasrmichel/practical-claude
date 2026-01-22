@@ -386,15 +386,15 @@ Skills = your workflow, automated.
 
 Skills can be invoked **manually** (by you) or **automatically** (by Claude):
 
-```markdown
-<!-- .claude/skills/eli5-test/SKILL.md -->
-~~~
+```yaml
+# .claude/skills/eli5-test/SKILL.md
+–––
 name: eli5-test
 description: Run eli5 with test topics
 # Control who can invoke:
 disable-model-invocation: false  # Claude can use (default)
 user-invocable: true             # You can use (default)
-~~~
+–––
 ```
 
 | Setting | Effect |
