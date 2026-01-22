@@ -162,7 +162,8 @@ Start with Sonnet, escalate to Opus for architecture.
 │   6. Plan Mode                                     │
 │   7-8. Live Build                                  │
 │   9. Hooks                                         │
-│   10. Skills                                       │
+│   10. Slash Commands                               │
+│   11. Skills                                       │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
@@ -310,6 +311,27 @@ Save to `.claude/hooks.json`
 Every file write → auto-formatted with `gofmt`
 
 <!-- DEMO: Show hook in action -->
+
+---
+
+# Slash Commands
+
+Built-in productivity boosters:
+
+| Command | Action |
+|---------|--------|
+| `/commit` | Smart commit with good message |
+| `/review-pr` | Review a pull request |
+| `/init` | Initialize CLAUDE.md |
+| `/plan` | Enter plan mode |
+| `/help` | Show all commands |
+
+```bash
+# After making changes, continue session with /commit
+claude -c -p "/commit"
+```
+
+<!-- DEMO: /commit our eli5 changes -->
 
 ---
 
