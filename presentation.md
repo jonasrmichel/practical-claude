@@ -361,45 +361,21 @@ Commands are markdown files - Claude follows the instructions inside.
 
 # Skills
 
-Custom reusable commands:
+Custom reusable commands in `.claude/skills/<name>/SKILL.md`:
 
 ```markdown
-<!-- .claude/skills/eli5-test/SKILL.md -->
-Build and run eli5 with sample topics to verify it works.
-
+–––
+description: Build and test eli5 with sample topics
+–––
 ## Steps
 1. Run `go build -o eli5 .`
 2. Test with `./eli5 "gravity"`
-3. Test with `./eli5 "the internet"`
 ```
 
-Then:
-```bash
-claude -c -p "/eli5-test"
-```
-
-Skills = your workflow, automated.
-
----
-
-# Skills: Invocation Control
-
-Skills can be invoked **manually** (by you) or **automatically** (by Claude):
-
-```yaml
-# .claude/skills/eli5-test/SKILL.md
-–––
-name: eli5-test
-description: Run eli5 with test topics
-# Control who can invoke:
-disable-model-invocation: false  # Claude can use (default)
-user-invocable: true             # You can use (default)
-–––
-```
+Invoke with `/eli5-test`. Frontmatter controls invocation:
 
 | Setting | Effect |
 |---------|--------|
-| Both defaults | Claude uses when relevant, you can invoke manually |
 | `disable-model-invocation: true` | Manual only (e.g., deploy scripts) |
 | `user-invocable: false` | Claude only (e.g., background knowledge) |
 
