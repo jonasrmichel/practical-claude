@@ -160,10 +160,9 @@ Start with Sonnet, escalate to Opus for architecture.
 │                                                    │
 │   5. Subagents                                     │
 │   6. Hooks                                         │
-│   7. Plan Mode                                     │
-│   8-9. Live Build                                  │
-│   10. Slash Commands                               │
-│   11. Skills                                       │
+│   7. Slash Commands                                │
+│   8. Skills                                        │
+│   9-10. Plan Mode & Live Build                     │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
@@ -272,48 +271,6 @@ Every file write → auto-formatted with `gofmt`
 
 ---
 
-# Plan Mode
-
-For non-trivial changes, plan first:
-
-```bash
-claude -c -p "/plan"
-```
-
-Claude will:
-1. Explore the codebase
-2. Design an approach
-3. Write a plan file
-4. Ask for your approval
-
-## When to Use
-
-Multi-file changes, architectural decisions, unfamiliar codebases.
-
-<!-- DEMO: /plan to design eli5 structure -->
-
----
-
-# Live Build: eli5 CLI
-
-Let's build our CLI! Continue the session with `-c`:
-
-```bash
-claude -c -p "
-  Build a Go CLI called 'eli5' that:
-  1. Takes a topic as a command line argument
-  2. Calls the Claude API to get an ELI5 explanation
-  3. Prints the explanation to stdout
-
-  Keep it simple - single main.go file is fine.
-  Use the anthropic-sdk-go package.
-"
-```
-
-<!-- DEMO: Build the CLI live -->
-
----
-
 # Slash Commands
 
 Built-in productivity boosters:
@@ -362,6 +319,48 @@ Frontmatter controls automatic invocation:
 ## Tip
 
 Write good `description` fields - Claude uses them to decide when to invoke.
+
+---
+
+# Plan Mode
+
+For non-trivial changes, plan first:
+
+```bash
+claude -c -p "/plan"
+```
+
+Claude will:
+1. Explore the codebase
+2. Design an approach
+3. Write a plan file
+4. Ask for your approval
+
+## When to Use
+
+Multi-file changes, architectural decisions, unfamiliar codebases.
+
+<!-- DEMO: /plan to design eli5 structure -->
+
+---
+
+# Live Build: eli5 CLI
+
+Let's build our CLI! Continue the session with `-c`:
+
+```bash
+claude -c -p "
+  Build a Go CLI called 'eli5' that:
+  1. Takes a topic as a command line argument
+  2. Calls the Claude API to get an ELI5 explanation
+  3. Prints the explanation to stdout
+
+  Keep it simple - single main.go file is fine.
+  Use the anthropic-sdk-go package.
+"
+```
+
+<!-- DEMO: Build the CLI live -->
 
 ---
 
