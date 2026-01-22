@@ -12,11 +12,6 @@ This repository contains a presentation and demos for "Practical Claude" - a wal
 practical-claude/
 ├── presentation.md      # Main slides (use `slides` tool to present)
 ├── theme.json           # Custom theme for slides
-├── eli5/                # Running example: Go CLI that explains topics simply
-│   ├── main.go
-│   ├── go.mod
-│   ├── CLAUDE.md
-│   └── .claude/         # Claude Code configs for eli5
 └── CLAUDE.md            # This file
 ```
 
@@ -29,7 +24,7 @@ practical-claude/
 go install github.com/maaslalani/slides@latest
 
 # Run presentation with custom theme
-slides --theme theme.json presentation.md
+slides presentation.md
 ```
 
 ### Working with eli5 Demo

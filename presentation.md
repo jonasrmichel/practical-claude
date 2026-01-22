@@ -53,6 +53,7 @@ We'll build this *live* while exploring Claude Code features.
 │   2. Project Setup (/init)                         │
 │   3. CLAUDE.md                                     │
 │   4. Models: Opus vs Sonnet                        │
+│   5. Permissions                                   │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
@@ -62,11 +63,15 @@ We'll build this *live* while exploring Claude Code features.
 # Installation
 
 ```bash
-# Install Claude Code
-npm install -g @anthropic-ai/claude-code
+# macOS, Linux, WSL
+curl -fsSL https://claude.ai/install.sh | bash
 
-# Verify installation
-claude --version
+# Windows PowerShell
+irm https://claude.ai/install.ps1 | iex
+
+# Or via Homebrew/WinGet
+brew install --cask claude-code
+winget install Anthropic.ClaudeCode
 ```
 
 ```bash
@@ -149,6 +154,35 @@ claude
 ## Tip
 
 Start with Sonnet, escalate to Opus for architecture.
+
+---
+
+# Permissions
+
+Control what Claude can do:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(go:*)",
+      "Bash(git:*)",
+      "Read",
+      "Write"
+    ],
+    "deny": [
+      "Bash(rm:-rf *)",
+      "Bash(curl:*)"
+    ]
+  }
+}
+```
+
+Save to `.claude/settings.json`
+
+## Tip
+
+Start restrictive, allow as needed.
 
 ---
 
@@ -368,43 +402,13 @@ cd eli5 && claude -c -p "
 ```
 ┌────────────────────────────────────────────────────┐
 │                                                    │
-│   12. Permissions                                  │
-│   13. Code Review & GitHub                         │
-│   14. Parallel Claudes (Local)                     │
-│   15. Remote Sessions                              │
-│   16. Teleporting                                  │
+│   11. Code Review & GitHub                         │
+│   12. Parallel Claudes (Local)                     │
+│   13. Remote Sessions                              │
+│   14. Teleporting                                  │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
-
----
-
-# Permissions
-
-Control what Claude can do:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Bash(go:*)",
-      "Bash(git:*)",
-      "Read",
-      "Write"
-    ],
-    "deny": [
-      "Bash(rm:-rf *)",
-      "Bash(curl:*)"
-    ]
-  }
-}
-```
-
-Save to `.claude/settings.json`
-
-## Tip
-
-Start restrictive, allow as needed.
 
 ---
 

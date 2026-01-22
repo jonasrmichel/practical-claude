@@ -21,7 +21,6 @@ An interactive terminal presentation that walks through the software development
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) 18+ (for Claude Code)
 - [Go](https://golang.org/) 1.21+ (for the eli5 demo)
 - [slides](https://github.com/maaslalani/slides) (terminal presentation tool)
 - An [Anthropic API key](https://console.anthropic.com/)
@@ -29,8 +28,8 @@ An interactive terminal presentation that walks through the software development
 ## Quick Start
 
 ```bash
-# Install Claude Code
-npm install -g @anthropic-ai/claude-code
+# Install Claude Code (macOS/Linux/WSL)
+curl -fsSL https://claude.ai/install.sh | bash
 
 # Install slides
 go install github.com/maaslalani/slides@latest
@@ -40,7 +39,7 @@ git clone https://github.com/jonasrmichel/practical-claude.git
 cd practical-claude
 
 # Run the presentation
-slides --theme theme.json presentation.md
+slides presentation.md
 ```
 
 ## Presentation Controls
