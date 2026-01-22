@@ -1,3 +1,11 @@
+--- 
+author: Jonas Michel
+date: MMMM dd, YYYY
+paging: Slide %d / %d
+--- 
+
+---
+
 # Practical Claude
 ## Demos, Patterns & Pro Tips
 
@@ -5,25 +13,16 @@
 
 ### Overview
 - Setup & CLAUDE.md
-- Plan Mode & Subagents
+- Subagents & Plan Mode
 - Hooks & Permissions
 - Parallel Claudes & Remote Sessions
 - MCP & Verification
 
-### Working Example
-
-`eli5` - a Go CLI that explains any topic in simple terms
-
-```
-$ eli5 "black holes"
-→ A black hole is like a cosmic vacuum cleaner that's SO strong, not even light can escape!
-```
-
-Press `space` to continue, `q` to quit
+Press `→` for next slide, `←` for previous slide, `Ctrl+E` to execute a slide's code block, `q` to quit
 
 ---
 
-# Running Example
+# Working Example
 
 Let's build a CLI tool called `eli5` that explains topics simply:
 
@@ -86,13 +85,8 @@ Claude Code: Your AI pair programmer in the terminal.
 # Create project directory
 mkdir eli5 && cd eli5
 
-# Initialize with Claude
-claude
-```
-
-Then in Claude:
-```
-/init
+# Initialize with Claude (starts a new session)
+claude -p "/init"
 ```
 
 This creates a `CLAUDE.md` file - your project's AI instruction manual.
@@ -164,8 +158,8 @@ Start with Sonnet, escalate to Opus for architecture.
 ```
 ┌────────────────────────────────────────────────────┐
 │                                                    │
-│   5. Plan Mode                                     │
-│   6. Subagents                                     │
+│   5. Subagents                                     │
+│   6. Plan Mode                                     │
 │   7-8. Live Build                                  │
 │   9. Hooks                                         │
 │   10. Slash Commands                               │
@@ -173,26 +167,6 @@ Start with Sonnet, escalate to Opus for architecture.
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
-
----
-
-# Plan Mode
-
-For non-trivial changes, plan first:
-
-```
-/plan
-```
-
-Claude will:
-1. Explore the codebase
-2. Design an approach
-3. Write a plan file
-4. Ask for your approval
-
-**When to use**: Multi-file changes, architectural decisions, unfamiliar codebases.
-
-<!-- DEMO: /plan to design eli5 structure -->
 
 ---
 
@@ -206,12 +180,16 @@ Claude can spawn specialized sub-agents:
 | **Plan** | Design implementations |
 | **Bash** | Run commands |
 
-Example prompt:
-```
-"Find examples of CLI tools using the Claude API in Go"
+Example:
+```bash
+claude -c -p "Find examples of CLI tools using the Claude API in Go"
 ```
 
 Claude uses Explore agent → searches → returns findings.
+
+## Important
+
+Each subagent runs in its own context window with a custom system prompt, specific tool access, and independent permissions.
 
 ---
 
@@ -233,9 +211,10 @@ prompt: |
   - Channel/goroutine best practices
 ```
 
-Use it:
-```
-"Ask @go-expert to review main.go for concurrency issues"
+## Use It
+
+```bash
+claude -c -p "Ask @go-expert to review main.go for concurrency issues"
 ```
 
 ---
@@ -249,17 +228,17 @@ Make Claude automatically delegate to your subagent:
 name: go-expert
 description: |
   Go specialist for code quality and performance.
-  Use proactively when writing, reviewing, or
+  Use PROACTIVELY when writing, reviewing, or
   debugging Go code.
 prompt: |
   You are a Go expert...
 ```
 
-Key phrase: **"Use proactively"** signals automatic delegation.
+Key phrase: **"Use PROACTIVELY"** signals automatic delegation.
 
-```
-You: "Review this code for race conditions"
-Claude: [Automatically delegates to @go-expert]
+```bash
+claude -c -p "Review this code for race conditions"
+# Claude automatically delegates to @go-expert
 ```
 
 Other trigger phrases: `"Use immediately after"`, `"MUST BE USED for"`
@@ -270,18 +249,42 @@ If delegation isn't reliable, make the description more specific.
 
 ---
 
+# Plan Mode
+
+For non-trivial changes, plan first:
+
+```bash
+claude -c -p "/plan"
+```
+
+Claude will:
+1. Explore the codebase
+2. Design an approach
+3. Write a plan file
+4. Ask for your approval
+
+## When to Use
+
+Multi-file changes, architectural decisions, unfamiliar codebases.
+
+<!-- DEMO: /plan to design eli5 structure -->
+
+---
+
 # Live Build: eli5 CLI
 
-Let's build our CLI! The prompt:
+Let's build our CLI! Continue the session with `-c`:
 
-```
-Build a Go CLI called "eli5" that:
-1. Takes a topic as a command line argument
-2. Calls the Claude API to get an ELI5 explanation
-3. Prints the explanation to stdout
+```bash
+claude -c -p "
+  Build a Go CLI called 'eli5' that:
+  1. Takes a topic as a command line argument
+  2. Calls the Claude API to get an ELI5 explanation
+  3. Prints the explanation to stdout
 
-Keep it simple - single main.go file is fine.
-Use the anthropic-sdk-go package.
+  Keep it simple - single main.go file is fine.
+  Use the anthropic-sdk-go package.
+"
 ```
 
 <!-- DEMO: Build the CLI live -->
@@ -324,11 +327,35 @@ Built-in productivity boosters:
 | `/help` | Show all commands |
 
 ```bash
-# After making changes
-/commit
+# After making changes, continue session with /commit
+claude -c -p "/commit"
 ```
 
 <!-- DEMO: /commit our eli5 changes -->
+
+---
+
+# Custom Commands
+
+Create project-specific commands in `.claude/commands/`:
+
+```markdown
+# .claude/commands/test.md
+
+Run all tests and show coverage report.
+
+## Steps
+1. Run `go test -cover ./...`
+2. If tests fail, analyze the errors
+3. Suggest fixes for any failures
+```
+
+Then invoke it:
+```bash
+claude -c -p "/test"
+```
+
+Commands are markdown files - Claude follows the instructions inside.
 
 ---
 
@@ -347,8 +374,8 @@ command: |
 ```
 
 Then:
-```
-/eli5-test
+```bash
+claude -c -p "/eli5-test"
 ```
 
 Skills = your workflow, automated.
@@ -359,15 +386,15 @@ Skills = your workflow, automated.
 
 Skills can be invoked **manually** (by you) or **automatically** (by Claude):
 
-```yaml
-# .claude/skills/eli5-test/SKILL.md
----
+```markdown
+<!-- .claude/skills/eli5-test/SKILL.md -->
+~~~
 name: eli5-test
 description: Run eli5 with test topics
 # Control who can invoke:
 disable-model-invocation: false  # Claude can use (default)
 user-invocable: true             # You can use (default)
----
+~~~
 ```
 
 | Setting | Effect |
@@ -443,8 +470,8 @@ Claude integrates with your GitHub workflow:
 ```
 
 **Local**:
-```
-/review-pr 123
+```bash
+claude -c -p "/review-pr 123"
 ```
 
 ## Tip
@@ -458,16 +485,15 @@ Install the Claude Code GitHub action using `/install-github-action`.
 Run multiple Claude instances on the same project:
 
 ```
-Terminal 1          Terminal 2
-┌──────────────┐   ┌──────────────┐
-│ claude       │   │ claude       │
-│              │   │              │
-│ "Add tests"  │   │ "Add docs"   │
-└──────────────┘   └──────────────┘
-         │                 │
-         └────────┬────────┘
-                  ▼
-            Same codebase
+Terminal 1                    Terminal 2
+┌────────────────────┐       ┌────────────────────┐
+│ claude -p          │       │ claude -p          │
+│   "Add tests"      │       │   "Add docs"       │
+└────────────────────┘       └────────────────────┘
+            │                          │
+            └───────────┬──────────────┘
+                        ▼
+                  Same codebase
 ```
 
 They share the filesystem but have separate contexts.
@@ -482,7 +508,7 @@ For long-running tasks, use claude.ai/code:
 
 ```bash
 # Push current context to remote
-claude --remote
+claude -c --remote
 ```
 
 **Benefits**:
@@ -573,8 +599,8 @@ Example: fetch trending topics from r/explainlikeimfive:
 ```
 
 Now Claude can fetch from the Reddit API:
-```
-"Get the top 5 posts from r/explainlikeimfive"
+```bash
+claude -c -p "Get the top 5 posts from r/explainlikeimfive"
 ```
 ```
 → Fetching https://www.reddit.com/r/explainlikeimfive/top.json
@@ -592,9 +618,16 @@ MCP = Claude's plugin system.
 Let's add a feature to browse r/explainlikeimfive:
 
 ```bash
+claude -c -p "
+  Add a --top flag to eli5 that fetches and displays
+  the top K posts from r/explainlikeimfive (default K=3).
+  Use the MCP fetch server to get Reddit data.
+"
+```
+
+```bash
 eli5 --top       # List top 3 ELI5 topics (default)
 eli5 --top 5     # List top 5 ELI5 topics
-eli5 --top 10    # List top 10 ELI5 topics
 ```
 
 ```
