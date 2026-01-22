@@ -123,7 +123,9 @@ Claude API for explanations
 
 Claude reads this on every session start.
 
-**Tip:** Tag @.claude in code reviews to add items to CLAUDE.md.
+### Tip
+
+Tag @.claude in code reviews to add items to CLAUDE.md.
 
 ---
 
@@ -144,7 +146,9 @@ claude --model opus
 claude
 ```
 
-**Tip**: Start with Sonnet, escalate to Opus for architecture.
+### Tip
+
+Start with Sonnet, escalate to Opus for architecture.
 
 ---
 
@@ -226,6 +230,36 @@ Use it:
 ```
 "Ask @go-expert to review main.go for concurrency issues"
 ```
+
+---
+
+# Proactive Subagents
+
+Make Claude automatically delegate to your subagent:
+
+```yaml
+# .claude/agents/go-expert.yaml
+name: go-expert
+description: |
+  Go specialist for code quality and performance.
+  Use proactively when writing, reviewing, or
+  debugging Go code.
+prompt: |
+  You are a Go expert...
+```
+
+Key phrase: **"Use proactively"** signals automatic delegation.
+
+```
+You: "Review this code for race conditions"
+Claude: [Automatically delegates to @go-expert]
+```
+
+Other trigger phrases: `"Use immediately after"`, `"MUST BE USED for"`
+
+### Tip
+
+If delegation isn't reliable, make the description more specific.
 
 ---
 
@@ -335,7 +369,9 @@ user-invocable: true             # You can use (default)
 | `disable-model-invocation: true` | Manual only (e.g., deploy scripts) |
 | `user-invocable: false` | Claude only (e.g., background knowledge) |
 
-**Tip**: Write good `description` fields - Claude uses them to decide when to invoke.
+### Tip
+
+Write good `description` fields - Claude uses them to decide when to invoke.
 
 ---
 
@@ -378,7 +414,9 @@ Control what Claude can do:
 
 Save to `.claude/settings.json`
 
-**Tip**: Start restrictive, allow as needed.
+### Tip
+
+Start restrictive, allow as needed.
 
 ---
 
@@ -402,7 +440,9 @@ Claude integrates with your GitHub workflow:
 /review-pr 123
 ```
 
-**Tip:** Install the Claude Code GitHub action using `/install-github-action`.
+### Tip
+
+Install the Claude Code GitHub action using `/install-github-action`.
 
 ---
 
@@ -582,7 +622,9 @@ After changes, always run:
 
 Claude will run these to verify its own work.
 
-**Pro tip**: Add to hooks for automatic verification.
+### Tip
+
+Add to hooks for automatic verification.
 
 ---
 
@@ -606,31 +648,6 @@ npm install -g claude-notify
 ```
 
 Background a task → get notified → review.
-
----
-
-# Wrap Up: What We Built
-
-```go
-///package main
-///import ("context"; "fmt"; "os"; "github.com/anthropics/anthropic-sdk-go")
-///func main() {
-client := anthropic.NewClient()
-msg, _ := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-    Model: anthropic.ModelClaude3_5SonnetLatest,
-    MaxTokens: 1024,
-    Messages: []anthropic.MessageParam{{
-        Role: anthropic.MessageParamRoleUser,
-        Content: "Explain " + os.Args[1] + " like I'm 5",
-    }},
-})
-fmt.Println(msg.Content[0].Text)
-///}
-```
-
-```bash
-./eli5 "machine learning"
-```
 
 ---
 
