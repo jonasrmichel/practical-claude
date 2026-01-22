@@ -71,7 +71,6 @@ claude --version
 
 ```bash
 # Start Claude in any directory
-cd ~/projects
 claude
 ```
 
@@ -83,10 +82,10 @@ Claude Code: Your AI pair programmer in the terminal.
 
 ```bash
 # Create project directory
-mkdir eli5 && cd eli5
+mkdir eli5
 
 # Initialize with Claude (starts a new session)
-claude -p "/init"
+cd eli5 && claude -p "/init"
 ```
 
 This creates a `CLAUDE.md` file - your project's AI instruction manual.
@@ -181,7 +180,7 @@ Claude can spawn specialized sub-agents:
 
 Example:
 ```bash
-claude -c -p "Find examples of CLI tools using the Claude API in Go"
+cd eli5 && claude -c -p "Find examples of CLI tools using the Claude API in Go"
 ```
 
 Claude uses Explore agent → searches → returns findings.
@@ -213,7 +212,7 @@ prompt: |
 ## Use It
 
 ```bash
-claude -c -p "Ask @go-expert to review main.go for concurrency issues"
+cd eli5 && claude -c -p "Ask @go-expert to review main.go for concurrency issues"
 ```
 
 ---
@@ -236,7 +235,7 @@ prompt: |
 Key phrase: **"Use PROACTIVELY"** signals automatic delegation.
 
 ```bash
-claude -c -p "Review this code for race conditions"
+cd eli5 && claude -c -p "Review this code for race conditions"
 # Claude automatically delegates to @go-expert
 ```
 
@@ -285,7 +284,7 @@ Built-in productivity boosters:
 
 ```bash
 # After making changes, continue session with /commit
-claude -c -p "/commit"
+cd eli5 && claude -c -p "/commit"
 ```
 
 <!-- DEMO: /commit our eli5 changes -->
@@ -327,7 +326,7 @@ Write good `description` fields - Claude uses them to decide when to invoke.
 For non-trivial changes, plan first:
 
 ```bash
-claude -c -p "/plan"
+cd eli5 && claude -c -p "/plan"
 ```
 
 Claude will:
@@ -349,7 +348,7 @@ Multi-file changes, architectural decisions, unfamiliar codebases.
 Let's build our CLI! Continue the session with `-c`:
 
 ```bash
-claude -c -p "
+cd eli5 && claude -c -p "
   Build a Go CLI called 'eli5' that:
   1. Takes a topic as a command line argument
   2. Calls the Claude API to get an ELI5 explanation
@@ -426,7 +425,7 @@ Claude integrates with your GitHub workflow:
 
 **Local**:
 ```bash
-claude -c -p "/review-pr 123"
+cd eli5 && claude -c -p "/review-pr 123"
 ```
 
 ## Tip
@@ -555,7 +554,7 @@ Example: fetch trending topics from r/explainlikeimfive:
 
 Now Claude can fetch from the Reddit API:
 ```bash
-claude -c -p "Get the top 5 posts from r/explainlikeimfive"
+cd eli5 && claude -c -p "Get the top 5 posts from r/explainlikeimfive"
 ```
 ```
 → Fetching https://www.reddit.com/r/explainlikeimfive/top.json
@@ -573,7 +572,7 @@ MCP = Claude's plugin system.
 Let's add a feature to browse r/explainlikeimfive:
 
 ```bash
-claude -c -p "
+cd eli5 && claude -c -p "
   Add a --top flag to eli5 that fetches and displays
   the top K posts from r/explainlikeimfive (default K=3).
   Use the MCP fetch server to get Reddit data.
