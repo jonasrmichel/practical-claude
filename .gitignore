@@ -6,5 +6,8 @@
 # OS files
 .DS_Store
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # Demo project (built live)
 eli5/
