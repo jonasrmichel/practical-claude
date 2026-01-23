@@ -450,23 +450,6 @@ They share the filesystem but have separate contexts.
 
 ---
 
-# Remote Sessions
-
-For long-running tasks, use claude.ai/code:
-
-```bash
-# Push current context to remote
-claude -c --remote
-```
-
-**What transfers**: Conversation context only. Repo is cloned fresh from GitHub.
-
-**Tip**: Push local changes to a branch first if you want them included.
-
-**Benefits**: Continues when laptop closes, access from phone/tablet.
-
----
-
 # Teleporting
 
 Move seamlessly between local and remote:
@@ -483,6 +466,29 @@ Local                          Remote
 ```
 
 Context travels with you.
+
+---
+
+# Teleporting: Local → Remote
+
+For long-running tasks, use claude.ai/code:
+
+```bash
+# Push current context to remote
+claude -c --remote
+
+# Or from within Claude Code, prefix message with `&`
+&Add unit tests
+
+# Or use /remote to teleport the current session to claude.ai/code
+/remote
+```
+
+**What transfers**: Conversation context only. Repo is cloned fresh from GitHub.
+
+**Tip**: Push local changes to a branch first if you want them included.
+
+**Benefits**: Continues when laptop closes, access from phone/tablet.
 
 ---
 

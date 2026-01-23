@@ -14,7 +14,8 @@
       "Bash(grep:*)",
       "Bash(cat:*)",
       "Bash(git log:*)",
-      "Bash(brew list:*)"
+      "Bash(brew list:*)",
+      "WebFetch(domain:docs.anthropic.com)"
     ]
   }
 }
