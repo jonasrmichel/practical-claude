@@ -538,10 +538,15 @@ Continue where Claude left off, now with full local tooling.
 
 # MCP: Model Context Protocol
 
-Connect Claude to external tools.
+Connect Claude to external tools, databases, and APIs.
 
-Example: fetch trending topics from r/explainlikeimfive:
+Example: add a web fetcher that converts pages to markdown:
 
+```bash
+claude mcp add fetch -- uvx mcp-server-fetch
+```
+
+Or configure in `.mcp.json` (project root):
 ```json
 {
   "mcpServers": {
@@ -553,7 +558,7 @@ Example: fetch trending topics from r/explainlikeimfive:
 }
 ```
 
-Now Claude can fetch from the Reddit API:
+Now Claude can fetch web content:
 ```bash
 cd eli5 && claude -c -p "Get the top 5 posts from r/explainlikeimfive"
 ```
@@ -564,7 +569,7 @@ cd eli5 && claude -c -p "Get the top 5 posts from r/explainlikeimfive"
 → 3. ELI5: What causes déjà vu?
 ```
 
-MCP = Claude's plugin system.
+MCP = Claude's protocol for external tool integration.
 
 ---
 
