@@ -186,7 +186,7 @@ Start restrictive, allow as needed.
 
 ---
 
-# Part 2: Plan & Build
+# Part 2: Productivity Boosters
 
 ```
 ┌────────────────────────────────────────────────────┐
@@ -195,7 +195,6 @@ Start restrictive, allow as needed.
 │   6. Hooks                                         │
 │   7. Slash Commands                                │
 │   8. Skills                                        │
-│   9-10. Plan Mode & Live Build                     │
 │                                                    │
 └────────────────────────────────────────────────────┘
 ```
@@ -227,57 +226,32 @@ Each subagent runs in its own context window with a custom system prompt, specif
 
 # Custom Subagents
 
-Define specialized agents in `.claude/agents/`:
+Define specialized agents in `.claude/agents/<name>.md`:
 
-```yaml
-# .claude/agents/go-expert.yaml
+```markdown
+–––
 name: go-expert
-description: Go specialist with advanced techniques
-prompt: |
-  You are a Go expert. Follow these principles:
-  - Idiomatic Go (effective Go, Go proverbs)
-  - Table-driven tests
-  - Error wrapping with %w
-  - Context propagation
-  - Graceful shutdown patterns
-  - Channel/goroutine best practices
+description: Go specialist. Use PROACTIVELY for Go code.
+tools: Read, Grep, Glob, Bash
+–––
+You are a Go expert. Follow these principles:
+- Idiomatic Go (effective Go, Go proverbs)
+- Table-driven tests
+- Error wrapping with %w
+- Context propagation
 ```
 
 ## Use It
 
 ```bash
-cd eli5 && claude -c -p "Ask @go-expert to review main.go for concurrency issues"
+cd eli5 && claude -c -p "Ask @go-expert to review main.go"
 ```
 
----
+## Proactive Delegation
 
-# Proactive Subagents
+Key phrase **"Use PROACTIVELY"** in description triggers automatic delegation.
 
-Make Claude automatically delegate to your subagent:
-
-```yaml
-# .claude/agents/go-expert.yaml
-name: go-expert
-description: |
-  Go specialist for code quality and performance.
-  Use PROACTIVELY when writing, reviewing, or
-  debugging Go code.
-prompt: |
-  You are a Go expert...
-```
-
-Key phrase: **"Use PROACTIVELY"** signals automatic delegation.
-
-```bash
-cd eli5 && claude -c -p "Review this code for race conditions"
-# Claude automatically delegates to @go-expert
-```
-
-Other trigger phrases: `"Use immediately after"`, `"MUST BE USED for"`
-
-## Tip
-
-If delegation isn't reliable, make the description more specific.
+Other triggers: `"Use immediately after"`, `"MUST BE USED for"`
 
 ---
 
@@ -321,13 +295,17 @@ Built-in productivity boosters:
 cd eli5 && claude -c -p "/commit"
 ```
 
+## Tip
+
+Use `?` to see a list of available slash commands.
+
 <!-- DEMO: /commit our eli5 changes -->
 
 ---
 
-# Skills
+# Skills (aka Custom Commands)
 
-Custom reusable commands in `.claude/skills/<name>/SKILL.md`:
+Custom reusable skills in `.claude/skills/<name>/SKILL.md`:
 
 ```markdown
 –––
@@ -352,6 +330,19 @@ Frontmatter controls automatic invocation:
 ## Tip
 
 Write good `description` fields - Claude uses them to decide when to invoke.
+
+---
+
+# Part 3: Plan & Build
+
+```
+┌────────────────────────────────────────────────────┐
+│                                                    │
+│   9.  Plan Mode                                    │
+│   10. Live Build                                   │
+│                                                    │
+└────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -397,7 +388,7 @@ cd eli5 && claude -c -p "
 
 ---
 
-# Part 3: Ship & Scale
+# Part 4: Ship & Scale
 
 ```
 ┌────────────────────────────────────────────────────┐
@@ -445,8 +436,7 @@ Run multiple Claude instances on the same project:
 ```
 Terminal 1                    Terminal 2
 ┌────────────────────┐       ┌────────────────────┐
-│ claude -p          │       │ claude -p          │
-│   "Add tests"      │       │   "Add docs"       │
+│ claude "Add tests" │       │ claude "Add docs"  │
 └────────────────────┘       └────────────────────┘
             │                          │
             └───────────┬──────────────┘
@@ -469,12 +459,11 @@ For long-running tasks, use claude.ai/code:
 claude -c --remote
 ```
 
-**Benefits**:
-- Continues when laptop closes
-- Access from phone/tablet
-- More compute resources
+**What transfers**: Conversation context only. Repo is cloned fresh from GitHub.
 
-**Use case**: "Refactor this whole module" → push to remote → check later.
+**Tip**: Push local changes to a branch first if you want them included.
+
+**Benefits**: Continues when laptop closes, access from phone/tablet.
 
 ---
 
@@ -502,21 +491,23 @@ Context travels with you.
 Pull a remote session back to your terminal:
 
 ```bash
-# List your remote sessions
-claude sessions list
+# From command line (interactive picker)
+claude --teleport
 
-# Resume a remote session locally
-claude sessions resume <session-id>
+# Or teleport a specific session
+claude --teleport <session-id>
+
+# Or from within Claude Code
+/teleport
 ```
 
 ```
 Remote (claude.ai/code)          Local
 ┌────────────────────────┐      ┌────────────────────────┐
-│ Long refactor running  │      │ $ claude sessions      │
-│ ...                    │  ──▶ │   resume abc123        │
-│ Ready for review       │      │                        │
-└────────────────────────┘      │ Resuming session...    │
-                                │ Context restored ✓     │
+│ Long refactor running  │      │ $ claude --teleport    │
+│ ...                    │  ──▶ │                        │
+│ Ready for review       │      │ Resuming session...    │
+└────────────────────────┘      │ Context restored ✓     │
                                 └────────────────────────┘
 ```
 
