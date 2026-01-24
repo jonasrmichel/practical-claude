@@ -7,9 +7,10 @@ paging: Slide %d / %d
 ---
 
 # Practical Claude
+
 ## Demos, Patterns & Pro Tips
 
-**@jonasrmichel**
+*Turbocharge your SDLC with Claude Code!*
 
 ### Overview
 - Setup & CLAUDE.md
@@ -157,6 +158,29 @@ Start with Sonnet, escalate to Opus for architecture.
 
 ---
 
+# Sessions & Context
+
+**Sessions:**
+- Each `claude` command starts a new session
+- Use `claude -c` or `claude --continue` to resume the last session
+- Sessions are ephemeral — no persistent memory between them
+
+**Context Window:**
+- Holds: conversation history, file contents, tool outputs, CLAUDE.md, skills
+- Run `/context` to see what's using space
+
+**When context fills up:**
+- Claude auto-summarizes older content
+- Key code and recent requests preserved; early details may be lost
+
+## Tips
+
+- Put persistent rules in CLAUDE.md, not conversation
+- Subagents get their own isolated context (won't bloat yours)
+- Use `/compact` to manually summarize with a focus
+
+---
+
 # Permissions
 
 Control what Claude can do:
@@ -178,11 +202,14 @@ Control what Claude can do:
 }
 ```
 
-Save to `.claude/settings.json`
+Save to `.claude/settings.json` (or `.claude/settings.local.json` for local-only settings).
+
+Or use `/permissions` in Claude Code to manage permissions.
 
 ## Tip
 
 Start restrictive, allow as needed.
+
 
 ---
 
@@ -270,7 +297,9 @@ Hooks run commands on Claude events:
 }
 ```
 
-Save to `.claude/hooks.json`
+Save to `.claude/hooks.json`.
+
+Or run `/hooks` in Claude Code to manage hooks.
 
 Every file write → auto-formatted with `gofmt`
 
@@ -297,7 +326,7 @@ cd eli5 && claude -c -p "/commit"
 
 ## Tip
 
-Use `?` to see a list of available slash commands.
+Type `?` for shortcuts 
 
 <!-- DEMO: /commit our eli5 changes -->
 
@@ -317,6 +346,8 @@ user-invocable: true
 1. Run `go build -o eli5 .`
 2. Test with `./eli5 "gravity"`
 ```
+
+Save to `.claude/skills/eli5-test/SKILL.md`.
 
 Invoke manually with `/eli5-test`.
 
@@ -368,7 +399,7 @@ Multi-file changes, architectural decisions, unfamiliar codebases.
 
 ---
 
-# Live Build: eli5 CLI
+# Live Build
 
 Let's build our CLI! Continue the session with `-c`:
 
@@ -379,7 +410,7 @@ cd eli5 && claude -c -p "
   2. Calls the Claude API to get an ELI5 explanation
   3. Prints the explanation to stdout
 
-  Keep it simple - single main.go file is fine.
+  Keep it simple -- single main.go file is fine.
   Use the anthropic-sdk-go package.
 "
 ```
@@ -486,9 +517,11 @@ claude -c --remote
 
 **What transfers**: Conversation context only. Repo is cloned fresh from GitHub.
 
-**Tip**: Push local changes to a branch first if you want them included.
-
 **Benefits**: Continues when laptop closes, access from phone/tablet.
+
+## Tip
+
+Push local changes to a branch first if you want them included.
 
 ---
 
@@ -540,7 +573,7 @@ Continue where Claude left off, now with full local tooling.
 
 Connect Claude to external tools, databases, and APIs.
 
-Example: add a web fetcher that converts pages to markdown:
+**Example:** add a web fetcher that converts pages to markdown:
 
 ```bash
 claude mcp add fetch -- uvx mcp-server-fetch
@@ -559,6 +592,7 @@ Or configure in `.mcp.json` (project root):
 ```
 
 Now Claude can fetch web content:
+
 ```bash
 cd eli5 && claude -c -p "Get the top 5 posts from r/explainlikeimfive"
 ```
@@ -573,7 +607,7 @@ MCP = Claude's protocol for external tool integration.
 
 ---
 
-# MCP in Action: eli5 --top
+# MCP in Action
 
 Let's add a feature to browse r/explainlikeimfive:
 
