@@ -43,6 +43,10 @@ eli5 "quantum computing"
 
 We'll build this *live* while exploring Claude Code features.
 
+## Note
+
+Code snippets can be run with `Ctrl+E`, but for the best experience, run them in sequence within a single Claude Code session.
+
 ---
 
 # Part 1: Bootstrap
