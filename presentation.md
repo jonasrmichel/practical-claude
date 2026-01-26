@@ -696,7 +696,8 @@ Works in Terminal, VSCode, Cursor, or any editor.
 3. **Hooks** - Automate the repetitive
 4. **Permissions** - Stay in control
 5. **Parallel + Remote** - Scale your Claude
-6. **Verification** - Let Claude check itself
+6. **Code Reviews** - Let Claude review your PRs
+7. **Verification** - Let Claude check itself
 
 ---
 
