@@ -45,7 +45,7 @@ We'll build this *live* while exploring Claude Code features.
 
 ## Note
 
-Code snippets can be run with `Ctrl+E`, but for the best experience, run them in sequence within a single Claude Code session.
+Code snippets can be run with `Ctrl+E`, but for the best experience, run the prompts in sequence within a single Claude Code session.
 
 ---
 
@@ -280,7 +280,7 @@ cd eli5 && claude -c -p "Ask @go-expert to review main.go"
 
 ## Proactive Delegation
 
-Key phrase **"Use PROACTIVELY"** in description triggers automatic delegation.
+Key phrase `"Use PROACTIVELY"` in description triggers automatic delegation.
 
 Other triggers: `"Use immediately after"`, `"MUST BE USED for"`
 
@@ -330,7 +330,7 @@ cd eli5 && claude -c -p "/commit"
 
 ## Tip
 
-Type `?` for shortcuts 
+Type `?` for shortcuts.
 
 <!-- DEMO: /commit our eli5 changes -->
 
@@ -364,7 +364,7 @@ Frontmatter controls automatic invocation:
 
 ## Tip
 
-Write good `description` fields - Claude uses them to decide when to invoke.
+Write good `description` fields -- Claude uses them to decide when to invoke.
 
 ---
 
@@ -668,24 +668,24 @@ Add to hooks for automatic verification.
 
 # Notifications
 
-Never miss when Claude finishes:
+Never miss when Claude finishes — install **code-notify**:
 
-**Terminal notifications with claude-notify**:
+**macOS:**
 ```bash
-# github.com/mylee04/claude-notify
-npm install -g claude-notify
+brew tap mylee04/tools && brew install code-notify && cn on
 ```
 
-**System bell** (built-in):
-```json
-{
-  "notifications": {
-    "onComplete": true
-  }
-}
+**Linux / WSL:**
+```bash
+curl -sSL https://raw.githubusercontent.com/mylee04/code-notify/main/scripts/install.sh | bash
 ```
 
-Background a task → get notified → review.
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/mylee04/code-notify/main/scripts/install-windows.ps1 | iex
+```
+
+Works in Terminal, VSCode, Cursor, or any editor.
 
 ---
 
